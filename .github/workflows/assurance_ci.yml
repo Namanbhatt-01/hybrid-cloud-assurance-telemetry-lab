@@ -1,0 +1,65 @@
+name: Lab 4 - Hybrid Cloud Assurance & Synthetic Telemetry CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  network-assurance-validation:
+    name: Hybrid Cloud Path Assurance & Alerting Pipeline
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install Python Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Launch Containerized Observability Stack
+        run: |
+          docker compose up -d --build
+
+      - name: Await Service Health
+        run: |
+          echo "Waiting for Prometheus, Grafana, and Mock AI endpoints..."
+          for i in {1..30}; do
+            if curl -s http://localhost:9090/-/healthy | grep -q "Prometheus Server is Healthy" && \
+               curl -s http://localhost:3000/api/health | grep -q '"database": "ok"' && \
+               curl -s http://localhost:11434/api/tags >/dev/null && \
+               curl -s http://localhost:9200/metrics >/dev/null; then
+              echo "✅ All services healthy!"
+              break
+            fi
+            echo "Waiting ($i/30)..."
+            sleep 3
+          done
+
+      - name: Execute End-to-End Assurance & Impairment Assertions
+        run: |
+          python3 prober/verify_assurance_pipeline.py
+
+      - name: Display Prometheus Metrics & Alert States
+        if: always()
+        run: |
+          echo "=== Prometheus Targets ==="
+          curl -s http://localhost:9090/api/v1/targets | python3 -m json.tool || true
+          echo -e "\n=== Prometheus Firing Alerts ==="
+          curl -s http://localhost:9090/api/v1/alerts | python3 -m json.tool || true
+
+      - name: Teardown Lab Environment
+        if: always()
+        run: |
+          docker compose down -v --remove-orphans

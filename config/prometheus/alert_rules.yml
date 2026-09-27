@@ -1,0 +1,46 @@
+groups:
+  - name: hybrid_cloud_assurance_alerts
+    rules:
+      - alert: AI_API_Endpoint_Unreachable
+        expr: probe_success == 0
+        for: 10s
+        labels:
+          severity: critical
+          tier: enterprise_ai_workload
+          cisco_assurance_domain: application_availability
+        annotations:
+          summary: "AI Inference Endpoint {{ $labels.instance }} is DOWN"
+          description: "Synthetic probe failed to reach the AI model API. HTTP status check returned failure."
+
+      - alert: AI_Inference_Latency_Degraded
+        expr: probe_duration_seconds > 0.150
+        for: 10s
+        labels:
+          severity: warning
+          tier: enterprise_ai_workload
+          cisco_assurance_domain: network_latency_slo
+        annotations:
+          summary: "AI Inference Latency SLO Violation on {{ $labels.instance }}"
+          description: "End-to-end synthetic probe response latency is {{ $value | humanizeDuration }}, exceeding the 150ms SLO threshold."
+
+      - alert: WAN_Transit_Packet_Loss_High
+        expr: synthetic_path_packet_loss_percent > 10
+        for: 10s
+        labels:
+          severity: critical
+          tier: enterprise_ai_workload
+          cisco_assurance_domain: hop_by_hop_path_quality
+        annotations:
+          summary: "High Packet Loss Detected on WAN Transit Path ({{ $value }}%)"
+          description: "Hop-by-hop synthetic probing detected packet loss exceeding 10% on intermediate transit hops."
+
+      - alert: Network_Path_Jitter_Elevated
+        expr: synthetic_path_jitter_ms > 20
+        for: 10s
+        labels:
+          severity: warning
+          tier: enterprise_ai_workload
+          cisco_assurance_domain: path_stability
+        annotations:
+          summary: "Network Path Latency Jitter Elevated ({{ $value }}ms)"
+          description: "Network path RTT jitter exceeded the 20ms threshold, indicating intermediate buffer queue instability."

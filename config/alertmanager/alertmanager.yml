@@ -1,0 +1,15 @@
+global:
+  resolve_timeout: 1m
+
+route:
+  group_by: ['alertname', 'severity', 'cisco_assurance_domain']
+  group_wait: 2s
+  group_interval: 5s
+  repeat_interval: 1h
+  receiver: 'default_log_receiver'
+
+receivers:
+  - name: 'default_log_receiver'
+    webhook_configs:
+      - url: 'http://172.30.0.50:9200/alerts/webhook'
+        send_resolved: true

@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+.coverage
+htmlcov/
+*.log
+data/
+grafana_data/
+prometheus_data/
+.DS_Store

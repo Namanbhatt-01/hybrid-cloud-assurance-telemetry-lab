@@ -1,0 +1,154 @@
+services:
+  prometheus:
+    image: prom/prometheus:v2.48.1
+    container_name: lab4_prometheus
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--storage.tsdb.retention.time=3d"
+      - "--web.enable-lifecycle"
+    volumes:
+      - ./config/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./config/prometheus/alert_rules.yml:/etc/prometheus/alert_rules.yml:ro
+    ports:
+      - "9090:9090"
+    networks:
+      assurance_net:
+        ipv4_address: 172.30.0.10
+    depends_on:
+      - blackbox_exporter
+      - alertmanager
+      - synthetic_prober
+    healthcheck:
+      test: ["CMD-SHELL", "wget --spider -q http://localhost:9090/-/healthy || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  blackbox_exporter:
+    image: prom/blackbox-exporter:v0.24.0
+    container_name: lab4_blackbox_exporter
+    command:
+      - "--config.file=/etc/blackbox/blackbox.yml"
+    volumes:
+      - ./config/blackbox/blackbox.yml:/etc/blackbox/blackbox.yml:ro
+    ports:
+      - "9115:9115"
+    networks:
+      assurance_net:
+        ipv4_address: 172.30.0.15
+    healthcheck:
+      test: ["CMD-SHELL", "wget --spider -q http://localhost:9115/ || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  alertmanager:
+    image: prom/alertmanager:v0.26.0
+    container_name: lab4_alertmanager
+    command:
+      - "--config.file=/etc/alertmanager/alertmanager.yml"
+    volumes:
+      - ./config/alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml:ro
+    ports:
+      - "9093:9093"
+    networks:
+      assurance_net:
+        ipv4_address: 172.30.0.20
+    healthcheck:
+      test: ["CMD-SHELL", "wget --spider -q http://localhost:9093/-/healthy || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  grafana:
+    image: grafana/grafana:10.2.3
+    container_name: lab4_grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Viewer
+    volumes:
+      - ./config/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources:ro
+      - ./config/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards:ro
+      - ./config/grafana/dashboards:/var/lib/grafana/dashboards:ro
+    ports:
+      - "3000:3000"
+    networks:
+      assurance_net:
+        ipv4_address: 172.30.0.25
+    depends_on:
+      - prometheus
+    healthcheck:
+      test: ["CMD-SHELL", "wget --spider -q http://localhost:3000/api/health || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  mock_ai_endpoints:
+    build:
+      context: .
+      dockerfile: mock_endpoints/Dockerfile
+    container_name: lab4_mock_ai
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    ports:
+      - "11434:11434"
+      - "8088:8088"
+    networks:
+      assurance_net:
+        ipv4_address: 172.30.0.30
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:11434/api/tags')\""]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+
+  wan_transit_gateway:
+    image: alpine:latest
+    container_name: lab4_wan_gateway
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    command: ["sh", "-c", "apk add --no-cache iproute2 iptables && echo 1 > /proc/sys/net/ipv4/ip_forward && tail -f /dev/null"]
+    networks:
+      assurance_net:
+        ipv4_address: 172.30.0.40
+
+  synthetic_prober:
+    build:
+      context: .
+      dockerfile: prober/Dockerfile
+    container_name: lab4_synthetic_prober
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    environment:
+      - PROMETHEUS_METRICS_PORT=9200
+      - OLLAMA_TARGET=http://172.30.0.30:11434
+      - HUGGINGFACE_TARGET=http://172.30.0.30:8088
+      - WAN_GATEWAY_IP=172.30.0.40
+    ports:
+      - "9200:9200"
+    networks:
+      assurance_net:
+        ipv4_address: 172.30.0.50
+    depends_on:
+      mock_ai_endpoints:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:9200/metrics')\""]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+
+networks:
+  assurance_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.30.0.0/16
+          gateway: 172.30.0.1
