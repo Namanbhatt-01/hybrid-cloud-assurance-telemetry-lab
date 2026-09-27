@@ -1,0 +1,941 @@
+{
+  "timestamp_utc": "2026-09-27T12:44:25.441071Z",
+  "host_system": "Darwin Namans-MacBook-Air.local 25.5.0 Darwin Kernel Version 25.5.0: Mon Apr 27 20:38:00 PDT 2026; root:xnu-12377.121.6~2/RELEASE_ARM64_T8103 arm64",
+  "docker_ps": "NAMES                    STATUS                   PORTS\nlab4_grafana             Up 5 minutes (healthy)   0.0.0.0:3000->3000/tcp, [::]:3000->3000/tcp\nlab4_prometheus          Up 5 minutes (healthy)   0.0.0.0:9090->9090/tcp, [::]:9090->9090/tcp\nlab4_synthetic_prober    Up 5 minutes (healthy)   0.0.0.0:9200->9200/tcp, [::]:9200->9200/tcp\nlab4_alertmanager        Up 5 minutes (healthy)   0.0.0.0:9093->9093/tcp, [::]:9093->9093/tcp\nlab4_blackbox_exporter   Up 5 minutes (healthy)   0.0.0.0:9115->9115/tcp, [::]:9115->9115/tcp\nlab4_mock_ai             Up 5 minutes (healthy)   0.0.0.0:8088->8088/tcp, [::]:8088->8088/tcp, 0.0.0.0:11434->11434/tcp, [::]:11434->11434/tcp",
+  "phases": {
+    "baseline": {
+      "prom_latency_ms": [
+        {
+          "metric": {
+            "__name__": "synthetic_path_latency_ms",
+            "instance": "synthetic_prober:9200",
+            "job": "synthetic_path_prober",
+            "target_host": "huggingface_cloud_api"
+          },
+          "value": [
+            1790513069.775,
+            "6.01"
+          ]
+        },
+        {
+          "metric": {
+            "__name__": "synthetic_path_latency_ms",
+            "instance": "synthetic_prober:9200",
+            "job": "synthetic_path_prober",
+            "target_host": "ollama_local_inference"
+          },
+          "value": [
+            1790513069.775,
+            "44.09"
+          ]
+        }
+      ],
+      "prom_loss_percent": [
+        {
+          "metric": {
+            "__name__": "synthetic_path_packet_loss_percent",
+            "instance": "synthetic_prober:9200",
+            "job": "synthetic_path_prober",
+            "target_host": "huggingface_cloud_api"
+          },
+          "value": [
+            1790513069.824,
+            "0"
+          ]
+        },
+        {
+          "metric": {
+            "__name__": "synthetic_path_packet_loss_percent",
+            "instance": "synthetic_prober:9200",
+            "job": "synthetic_path_prober",
+            "target_host": "ollama_local_inference"
+          },
+          "value": [
+            1790513069.824,
+            "0"
+          ]
+        }
+      ],
+      "prom_jitter_ms": [
+        {
+          "metric": {
+            "__name__": "synthetic_path_jitter_ms",
+            "instance": "synthetic_prober:9200",
+            "job": "synthetic_path_prober",
+            "target_host": "huggingface_cloud_api"
+          },
+          "value": [
+            1790513069.828,
+            "3.55"
+          ]
+        },
+        {
+          "metric": {
+            "__name__": "synthetic_path_jitter_ms",
+            "instance": "synthetic_prober:9200",
+            "job": "synthetic_path_prober",
+            "target_host": "ollama_local_inference"
+          },
+          "value": [
+            1790513069.828,
+            "23.5"
+          ]
+        }
+      ],
+      "prom_ttfb_ms": [
+        {
+          "metric": {
+            "__name__": "synthetic_http_ttfb_ms",
+            "instance": "synthetic_prober:9200",
+            "job": "synthetic_path_prober",
+            "target_host": "huggingface_cloud_api"
+          },
+          "value": [
+            1790513069.834,
+            "5.49"
+          ]
+        },
+        {
+          "metric": {
+            "__name__": "synthetic_http_ttfb_ms",
+            "instance": "synthetic_prober:9200",
+            "job": "synthetic_path_prober",
+            "target_host": "ollama_local_inference"
+          },
+          "value": [
+            1790513069.834,
+            "33.01"
+          ]
+        }
+      ],
+      "blackbox_http_probe": [
+        "# HELP probe_dns_lookup_time_seconds Returns the time taken for probe dns lookup in seconds",
+        "# TYPE probe_dns_lookup_time_seconds gauge",
+        "probe_dns_lookup_time_seconds 0.015681357",
+        "# HELP probe_duration_seconds Returns how long the probe took to complete in seconds",
+        "# TYPE probe_duration_seconds gauge",
+        "probe_duration_seconds 0.019878852",
+        "# HELP probe_failed_due_to_regex Indicates if probe failed due to regex",
+        "# TYPE probe_failed_due_to_regex gauge",
+        "probe_failed_due_to_regex 0",
+        "# HELP probe_http_content_length Length of http content response",
+        "# TYPE probe_http_content_length gauge",
+        "probe_http_content_length 31",
+        "# HELP probe_http_duration_seconds Duration of http request by phase, summed over all redirects",
+        "# TYPE probe_http_duration_seconds gauge",
+        "probe_http_duration_seconds{phase=\"connect\"} 0.000157535",
+        "probe_http_duration_seconds{phase=\"processing\"} 0.003406861",
+        "probe_http_duration_seconds{phase=\"resolve\"} 0.015681357",
+        "probe_http_duration_seconds{phase=\"tls\"} 0",
+        "probe_http_duration_seconds{phase=\"transfer\"} 0.00023674",
+        "# HELP probe_http_redirects The number of redirects"
+      ],
+      "active_alerts": [
+        {
+          "labels": {
+            "alertname": "AI_API_Endpoint_Unreachable",
+            "cisco_assurance_domain": "application_availability",
+            "instance": "172.30.0.40:22",
+            "job": "blackbox_tcp_ai_ports",
+            "severity": "critical",
+            "tier": "enterprise_ai_workload"
+          },
+          "annotations": {
+            "description": "Synthetic probe failed to reach the AI model API. HTTP status check returned failure.",
+            "summary": "AI Inference Endpoint 172.30.0.40:22 is DOWN"
+          },
+          "state": "firing",
+          "activeAt": "2026-09-27T12:39:02.654222915Z",
+          "value": "0e+00"
+        },
+        {
+          "labels": {
+            "alertname": "AI_Inference_Latency_Degraded",
+            "cisco_assurance_domain": "network_latency_slo",
+            "instance": "172.30.0.40:22",
+            "job": "blackbox_tcp_ai_ports",
+            "severity": "warning",
+            "tier": "enterprise_ai_workload"
+          },
+          "annotations": {
+            "description": "End-to-end synthetic probe response latency is 3.11s, exceeding the 150ms SLO threshold.",
+            "summary": "AI Inference Latency SLO Violation on 172.30.0.40:22"
+          },
+          "state": "firing",
+          "activeAt": "2026-09-27T12:39:02.654222915Z",
+          "value": "3.110353585e+00"
+        }
+      ]
+    },
+    "impaired": {
+      "injection_command_output": "\ud83d\udea8 [WAN-IMPAIRMENT] Injecting 180ms (+-30ms) latency jitter and 15% packet loss on container 'lab4_mock_ai'...\n\u2705 Impairment active on lab4_mock_ai:\nqdisc netem 8005: root refcnt 9 limit 1000 delay 180ms  30ms loss 15% seed 6443984912908469970",
+      "tc_qdisc_status": "qdisc netem 8005: root refcnt 9 limit 1000 delay 180ms  30ms loss 15% seed 6443984912908469970\n Sent 14184 bytes 139 pkt (dropped 27, overlimits 0 requeues 0) \n backlog 206b 3p requeues 0",
+      "prom_latency_ms": [
+        {
+          "metric": {
+            "__name__": "synthetic_path_latency_ms",
+            "instance": "synthetic_prober:9200",
+            "job": "synthetic_path_prober",
+            "target_host": "huggingface_cloud_api"
+          },
+          "value": [
+            1790513088.07,
+            "1555.11"
+          ]
+        },
+        {
+          "metric": {
+            "__name__": "synthetic_path_latency_ms",
+            "instance": "synthetic_prober:9200",
+            "job": "synthetic_path_prober",
+            "target_host": "ollama_local_inference"
+          },
+          "value": [
+            1790513088.07,
+            "1621.49"
+          ]
+        }
+      ],
+      "prom_loss_percent": [
+        {
+          "metric": {
+            "__name__": "synthetic_path_packet_loss_percent",
+            "instance": "synthetic_prober:9200",
+            "job": "synthetic_path_prober",
+            "target_host": "huggingface_cloud_api"
+          },
+          "value": [
+            1790513088.082,
+            "15"
+          ]
+        },
+        {
+          "metric": {
+            "__name__": "synthetic_path_packet_loss_percent",
+            "instance": "synthetic_prober:9200",
+            "job": "synthetic_path_prober",
+            "target_host": "ollama_local_inference"
+          },
+          "value": [
+            1790513088.082,
+            "15"
+          ]
+        }
+      ],
+      "prom_jitter_ms": [
+        {
+          "metric": {
+            "__name__": "synthetic_path_jitter_ms",
+            "instance": "synthetic_prober:9200",
+            "job": "synthetic_path_prober",
+            "target_host": "huggingface_cloud_api"
+          },
+          "value": [
+            1790513088.087,
+            "1198.66"
+          ]
+        },
+        {
+          "metric": {
+            "__name__": "synthetic_path_jitter_ms",
+            "instance": "synthetic_prober:9200",
+            "job": "synthetic_path_prober",
+            "target_host": "ollama_local_inference"
+          },
+          "value": [
+            1790513088.087,
+            "775.72"
+          ]
+        }
+      ],
+      "prom_ttfb_ms": [
+        {
+          "metric": {
+            "__name__": "synthetic_http_ttfb_ms",
+            "instance": "synthetic_prober:9200",
+            "job": "synthetic_path_prober",
+            "target_host": "huggingface_cloud_api"
+          },
+          "value": [
+            1790513088.093,
+            "1376.62"
+          ]
+        },
+        {
+          "metric": {
+            "__name__": "synthetic_http_ttfb_ms",
+            "instance": "synthetic_prober:9200",
+            "job": "synthetic_path_prober",
+            "target_host": "ollama_local_inference"
+          },
+          "value": [
+            1790513088.093,
+            "1387.35"
+          ]
+        }
+      ],
+      "active_alerts": [
+        {
+          "labels": {
+            "alertname": "AI_API_Endpoint_Unreachable",
+            "cisco_assurance_domain": "application_availability",
+            "instance": "172.30.0.40:22",
+            "job": "blackbox_tcp_ai_ports",
+            "severity": "critical",
+            "tier": "enterprise_ai_workload"
+          },
+          "annotations": {
+            "description": "Synthetic probe failed to reach the AI model API. HTTP status check returned failure.",
+            "summary": "AI Inference Endpoint 172.30.0.40:22 is DOWN"
+          },
+          "state": "firing",
+          "activeAt": "2026-09-27T12:39:02.654222915Z",
+          "value": "0e+00"
+        },
+        {
+          "labels": {
+            "alertname": "AI_Inference_Latency_Degraded",
+            "cisco_assurance_domain": "network_latency_slo",
+            "instance": "172.30.0.30:8088",
+            "job": "blackbox_tcp_ai_ports",
+            "severity": "warning",
+            "tier": "enterprise_ai_workload"
+          },
+          "annotations": {
+            "description": "End-to-end synthetic probe response latency is 218.3ms, exceeding the 150ms SLO threshold.",
+            "summary": "AI Inference Latency SLO Violation on 172.30.0.30:8088"
+          },
+          "state": "firing",
+          "activeAt": "2026-09-27T12:44:37.654222915Z",
+          "value": "2.18318092e-01"
+        },
+        {
+          "labels": {
+            "alertname": "AI_Inference_Latency_Degraded",
+            "cisco_assurance_domain": "network_latency_slo",
+            "instance": "http://172.30.0.30:11434/api/generate",
+            "job": "blackbox_http_inference_post",
+            "severity": "warning",
+            "tier": "enterprise_ai_workload"
+          },
+          "annotations": {
+            "description": "End-to-end synthetic probe response latency is 578.1ms, exceeding the 150ms SLO threshold.",
+            "summary": "AI Inference Latency SLO Violation on http://172.30.0.30:11434/api/generate"
+          },
+          "state": "firing",
+          "activeAt": "2026-09-27T12:44:37.654222915Z",
+          "value": "5.78063429e-01"
+        },
+        {
+          "labels": {
+            "alertname": "AI_Inference_Latency_Degraded",
+            "cisco_assurance_domain": "network_latency_slo",
+            "instance": "172.30.0.40:22",
+            "job": "blackbox_tcp_ai_ports",
+            "severity": "warning",
+            "tier": "enterprise_ai_workload"
+          },
+          "annotations": {
+            "description": "End-to-end synthetic probe response latency is 3.132s, exceeding the 150ms SLO threshold.",
+            "summary": "AI Inference Latency SLO Violation on 172.30.0.40:22"
+          },
+          "state": "firing",
+          "activeAt": "2026-09-27T12:39:02.654222915Z",
+          "value": "3.1324675539999998e+00"
+        },
+        {
+          "labels": {
+            "alertname": "AI_Inference_Latency_Degraded",
+            "cisco_assurance_domain": "network_latency_slo",
+            "instance": "172.30.0.30:11434",
+            "job": "blackbox_tcp_ai_ports",
+            "severity": "warning",
+            "tier": "enterprise_ai_workload"
+          },
+          "annotations": {
+            "description": "End-to-end synthetic probe response latency is 206ms, exceeding the 150ms SLO threshold.",
+            "summary": "AI Inference Latency SLO Violation on 172.30.0.30:11434"
+          },
+          "state": "firing",
+          "activeAt": "2026-09-27T12:44:32.654222915Z",
+          "value": "2.06011055e-01"
+        },
+        {
+          "labels": {
+            "alertname": "AI_Inference_Latency_Degraded",
+            "cisco_assurance_domain": "network_latency_slo",
+            "instance": "http://172.30.0.30:11434/api/tags",
+            "job": "blackbox_http_ai_endpoints",
+            "severity": "warning",
+            "tier": "enterprise_ai_workload"
+          },
+          "annotations": {
+            "description": "End-to-end synthetic probe response latency is 382.5ms, exceeding the 150ms SLO threshold.",
+            "summary": "AI Inference Latency SLO Violation on http://172.30.0.30:11434/api/tags"
+          },
+          "state": "firing",
+          "activeAt": "2026-09-27T12:44:32.654222915Z",
+          "value": "3.82543903e-01"
+        },
+        {
+          "labels": {
+            "alertname": "AI_Inference_Latency_Degraded",
+            "cisco_assurance_domain": "network_latency_slo",
+            "instance": "http://172.30.0.30:8088/models/meta-llama",
+            "job": "blackbox_http_ai_endpoints",
+            "severity": "warning",
+            "tier": "enterprise_ai_workload"
+          },
+          "annotations": {
+            "description": "End-to-end synthetic probe response latency is 381ms, exceeding the 150ms SLO threshold.",
+            "summary": "AI Inference Latency SLO Violation on http://172.30.0.30:8088/models/meta-llama"
+          },
+          "state": "firing",
+          "activeAt": "2026-09-27T12:44:37.654222915Z",
+          "value": "3.80986841e-01"
+        },
+        {
+          "labels": {
+            "alertname": "WAN_Transit_Packet_Loss_High",
+            "cisco_assurance_domain": "hop_by_hop_path_quality",
+            "instance": "synthetic_prober:9200",
+            "job": "synthetic_path_prober",
+            "severity": "critical",
+            "target_host": "huggingface_cloud_api",
+            "tier": "enterprise_ai_workload"
+          },
+          "annotations": {
+            "description": "Hop-by-hop synthetic probing detected packet loss exceeding 10% on intermediate transit hops.",
+            "summary": "High Packet Loss Detected on WAN Transit Path (15%)"
+          },
+          "state": "firing",
+          "activeAt": "2026-09-27T12:44:37.654222915Z",
+          "value": "1.5e+01"
+        },
+        {
+          "labels": {
+            "alertname": "WAN_Transit_Packet_Loss_High",
+            "cisco_assurance_domain": "hop_by_hop_path_quality",
+            "instance": "synthetic_prober:9200",
+            "job": "synthetic_path_prober",
+            "severity": "critical",
+            "target_host": "ollama_local_inference",
+            "tier": "enterprise_ai_workload"
+          },
+          "annotations": {
+            "description": "Hop-by-hop synthetic probing detected packet loss exceeding 10% on intermediate transit hops.",
+            "summary": "High Packet Loss Detected on WAN Transit Path (15%)"
+          },
+          "state": "firing",
+          "activeAt": "2026-09-27T12:44:37.654222915Z",
+          "value": "1.5e+01"
+        },
+        {
+          "labels": {
+            "alertname": "Network_Path_Jitter_Elevated",
+            "cisco_assurance_domain": "path_stability",
+            "instance": "synthetic_prober:9200",
+            "job": "synthetic_path_prober",
+            "severity": "warning",
+            "target_host": "huggingface_cloud_api",
+            "tier": "enterprise_ai_workload"
+          },
+          "annotations": {
+            "description": "Network path RTT jitter exceeded the 20ms threshold, indicating intermediate buffer queue instability.",
+            "summary": "Network Path Latency Jitter Elevated (1198.66ms)"
+          },
+          "state": "firing",
+          "activeAt": "2026-09-27T12:44:37.654222915Z",
+          "value": "1.19866e+03"
+        },
+        {
+          "labels": {
+            "alertname": "Network_Path_Jitter_Elevated",
+            "cisco_assurance_domain": "path_stability",
+            "instance": "synthetic_prober:9200",
+            "job": "synthetic_path_prober",
+            "severity": "warning",
+            "target_host": "ollama_local_inference",
+            "tier": "enterprise_ai_workload"
+          },
+          "annotations": {
+            "description": "Network path RTT jitter exceeded the 20ms threshold, indicating intermediate buffer queue instability.",
+            "summary": "Network Path Latency Jitter Elevated (775.72ms)"
+          },
+          "state": "firing",
+          "activeAt": "2026-09-27T12:44:32.654222915Z",
+          "value": "7.7572e+02"
+        }
+      ],
+      "alertmanager_alerts": [
+        {
+          "annotations": {
+            "description": "Hop-by-hop synthetic probing detected packet loss exceeding 10% on intermediate transit hops.",
+            "summary": "High Packet Loss Detected on WAN Transit Path (15%)"
+          },
+          "endsAt": "2026-09-27T12:48:47.654Z",
+          "fingerprint": "0d6bc7ca57789455",
+          "receivers": [
+            {
+              "name": "default_log_receiver"
+            }
+          ],
+          "startsAt": "2026-09-27T12:44:47.654Z",
+          "status": {
+            "inhibitedBy": [],
+            "silencedBy": [],
+            "state": "active"
+          },
+          "updatedAt": "2026-09-27T12:44:47.677Z",
+          "generatorURL": "http://149c6b028815:9090/graph?g0.expr=synthetic_path_packet_loss_percent+%3E+10&g0.tab=1",
+          "labels": {
+            "alertname": "WAN_Transit_Packet_Loss_High",
+            "cisco_assurance_domain": "hop_by_hop_path_quality",
+            "instance": "synthetic_prober:9200",
+            "job": "synthetic_path_prober",
+            "severity": "critical",
+            "target_host": "huggingface_cloud_api",
+            "tier": "enterprise_ai_workload"
+          }
+        },
+        {
+          "annotations": {
+            "description": "End-to-end synthetic probe response latency is 182.4ms, exceeding the 150ms SLO threshold.",
+            "summary": "AI Inference Latency SLO Violation on 172.30.0.30:11434"
+          },
+          "endsAt": "2026-09-27T12:48:42.654Z",
+          "fingerprint": "3f7c9f70f8db694e",
+          "receivers": [
+            {
+              "name": "default_log_receiver"
+            }
+          ],
+          "startsAt": "2026-09-27T12:44:42.654Z",
+          "status": {
+            "inhibitedBy": [],
+            "silencedBy": [],
+            "state": "active"
+          },
+          "updatedAt": "2026-09-27T12:44:42.667Z",
+          "generatorURL": "http://149c6b028815:9090/graph?g0.expr=probe_duration_seconds+%3E+0.15&g0.tab=1",
+          "labels": {
+            "alertname": "AI_Inference_Latency_Degraded",
+            "cisco_assurance_domain": "network_latency_slo",
+            "instance": "172.30.0.30:11434",
+            "job": "blackbox_tcp_ai_ports",
+            "severity": "warning",
+            "tier": "enterprise_ai_workload"
+          }
+        },
+        {
+          "annotations": {
+            "description": "Network path RTT jitter exceeded the 20ms threshold, indicating intermediate buffer queue instability.",
+            "summary": "Network Path Latency Jitter Elevated (502.91ms)"
+          },
+          "endsAt": "2026-09-27T12:48:42.654Z",
+          "fingerprint": "6efaa96662d33bed",
+          "receivers": [
+            {
+              "name": "default_log_receiver"
+            }
+          ],
+          "startsAt": "2026-09-27T12:44:42.654Z",
+          "status": {
+            "inhibitedBy": [],
+            "silencedBy": [],
+            "state": "active"
+          },
+          "updatedAt": "2026-09-27T12:44:42.668Z",
+          "generatorURL": "http://149c6b028815:9090/graph?g0.expr=synthetic_path_jitter_ms+%3E+20&g0.tab=1",
+          "labels": {
+            "alertname": "Network_Path_Jitter_Elevated",
+            "cisco_assurance_domain": "path_stability",
+            "instance": "synthetic_prober:9200",
+            "job": "synthetic_path_prober",
+            "severity": "warning",
+            "target_host": "ollama_local_inference",
+            "tier": "enterprise_ai_workload"
+          }
+        },
+        {
+          "annotations": {
+            "description": "Network path RTT jitter exceeded the 20ms threshold, indicating intermediate buffer queue instability.",
+            "summary": "Network Path Latency Jitter Elevated (1198.66ms)"
+          },
+          "endsAt": "2026-09-27T12:48:47.654Z",
+          "fingerprint": "8b40b942eb340f5a",
+          "receivers": [
+            {
+              "name": "default_log_receiver"
+            }
+          ],
+          "startsAt": "2026-09-27T12:44:47.654Z",
+          "status": {
+            "inhibitedBy": [],
+            "silencedBy": [],
+            "state": "active"
+          },
+          "updatedAt": "2026-09-27T12:44:47.677Z",
+          "generatorURL": "http://149c6b028815:9090/graph?g0.expr=synthetic_path_jitter_ms+%3E+20&g0.tab=1",
+          "labels": {
+            "alertname": "Network_Path_Jitter_Elevated",
+            "cisco_assurance_domain": "path_stability",
+            "instance": "synthetic_prober:9200",
+            "job": "synthetic_path_prober",
+            "severity": "warning",
+            "target_host": "huggingface_cloud_api",
+            "tier": "enterprise_ai_workload"
+          }
+        },
+        {
+          "annotations": {
+            "description": "End-to-end synthetic probe response latency is 381ms, exceeding the 150ms SLO threshold.",
+            "summary": "AI Inference Latency SLO Violation on http://172.30.0.30:8088/models/meta-llama"
+          },
+          "endsAt": "2026-09-27T12:48:47.654Z",
+          "fingerprint": "9626f97e9b39e23b",
+          "receivers": [
+            {
+              "name": "default_log_receiver"
+            }
+          ],
+          "startsAt": "2026-09-27T12:44:47.654Z",
+          "status": {
+            "inhibitedBy": [],
+            "silencedBy": [],
+            "state": "active"
+          },
+          "updatedAt": "2026-09-27T12:44:47.675Z",
+          "generatorURL": "http://149c6b028815:9090/graph?g0.expr=probe_duration_seconds+%3E+0.15&g0.tab=1",
+          "labels": {
+            "alertname": "AI_Inference_Latency_Degraded",
+            "cisco_assurance_domain": "network_latency_slo",
+            "instance": "http://172.30.0.30:8088/models/meta-llama",
+            "job": "blackbox_http_ai_endpoints",
+            "severity": "warning",
+            "tier": "enterprise_ai_workload"
+          }
+        },
+        {
+          "annotations": {
+            "description": "End-to-end synthetic probe response latency is 3.09s, exceeding the 150ms SLO threshold.",
+            "summary": "AI Inference Latency SLO Violation on 172.30.0.40:22"
+          },
+          "endsAt": "2026-09-27T12:48:37.654Z",
+          "fingerprint": "a7507fde9a59d926",
+          "receivers": [
+            {
+              "name": "default_log_receiver"
+            }
+          ],
+          "startsAt": "2026-09-27T12:39:12.654Z",
+          "status": {
+            "inhibitedBy": [],
+            "silencedBy": [],
+            "state": "active"
+          },
+          "updatedAt": "2026-09-27T12:44:37.674Z",
+          "generatorURL": "http://149c6b028815:9090/graph?g0.expr=probe_duration_seconds+%3E+0.15&g0.tab=1",
+          "labels": {
+            "alertname": "AI_Inference_Latency_Degraded",
+            "cisco_assurance_domain": "network_latency_slo",
+            "instance": "172.30.0.40:22",
+            "job": "blackbox_tcp_ai_ports",
+            "severity": "warning",
+            "tier": "enterprise_ai_workload"
+          }
+        },
+        {
+          "annotations": {
+            "description": "End-to-end synthetic probe response latency is 570.7ms, exceeding the 150ms SLO threshold.",
+            "summary": "AI Inference Latency SLO Violation on http://172.30.0.30:11434/api/tags"
+          },
+          "endsAt": "2026-09-27T12:48:42.654Z",
+          "fingerprint": "a81abdc603dc54ce",
+          "receivers": [
+            {
+              "name": "default_log_receiver"
+            }
+          ],
+          "startsAt": "2026-09-27T12:44:42.654Z",
+          "status": {
+            "inhibitedBy": [],
+            "silencedBy": [],
+            "state": "active"
+          },
+          "updatedAt": "2026-09-27T12:44:42.667Z",
+          "generatorURL": "http://149c6b028815:9090/graph?g0.expr=probe_duration_seconds+%3E+0.15&g0.tab=1",
+          "labels": {
+            "alertname": "AI_Inference_Latency_Degraded",
+            "cisco_assurance_domain": "network_latency_slo",
+            "instance": "http://172.30.0.30:11434/api/tags",
+            "job": "blackbox_http_ai_endpoints",
+            "severity": "warning",
+            "tier": "enterprise_ai_workload"
+          }
+        },
+        {
+          "annotations": {
+            "description": "End-to-end synthetic probe response latency is 218.3ms, exceeding the 150ms SLO threshold.",
+            "summary": "AI Inference Latency SLO Violation on 172.30.0.30:8088"
+          },
+          "endsAt": "2026-09-27T12:48:47.654Z",
+          "fingerprint": "ce9eb4838ca21a33",
+          "receivers": [
+            {
+              "name": "default_log_receiver"
+            }
+          ],
+          "startsAt": "2026-09-27T12:44:47.654Z",
+          "status": {
+            "inhibitedBy": [],
+            "silencedBy": [],
+            "state": "active"
+          },
+          "updatedAt": "2026-09-27T12:44:47.675Z",
+          "generatorURL": "http://149c6b028815:9090/graph?g0.expr=probe_duration_seconds+%3E+0.15&g0.tab=1",
+          "labels": {
+            "alertname": "AI_Inference_Latency_Degraded",
+            "cisco_assurance_domain": "network_latency_slo",
+            "instance": "172.30.0.30:8088",
+            "job": "blackbox_tcp_ai_ports",
+            "severity": "warning",
+            "tier": "enterprise_ai_workload"
+          }
+        },
+        {
+          "annotations": {
+            "description": "End-to-end synthetic probe response latency is 578.1ms, exceeding the 150ms SLO threshold.",
+            "summary": "AI Inference Latency SLO Violation on http://172.30.0.30:11434/api/generate"
+          },
+          "endsAt": "2026-09-27T12:48:47.654Z",
+          "fingerprint": "d9fa01be9a22cbed",
+          "receivers": [
+            {
+              "name": "default_log_receiver"
+            }
+          ],
+          "startsAt": "2026-09-27T12:44:47.654Z",
+          "status": {
+            "inhibitedBy": [],
+            "silencedBy": [],
+            "state": "active"
+          },
+          "updatedAt": "2026-09-27T12:44:47.675Z",
+          "generatorURL": "http://149c6b028815:9090/graph?g0.expr=probe_duration_seconds+%3E+0.15&g0.tab=1",
+          "labels": {
+            "alertname": "AI_Inference_Latency_Degraded",
+            "cisco_assurance_domain": "network_latency_slo",
+            "instance": "http://172.30.0.30:11434/api/generate",
+            "job": "blackbox_http_inference_post",
+            "severity": "warning",
+            "tier": "enterprise_ai_workload"
+          }
+        },
+        {
+          "annotations": {
+            "description": "Hop-by-hop synthetic probing detected packet loss exceeding 10% on intermediate transit hops.",
+            "summary": "High Packet Loss Detected on WAN Transit Path (15%)"
+          },
+          "endsAt": "2026-09-27T12:48:47.654Z",
+          "fingerprint": "dc140ec41316da64",
+          "receivers": [
+            {
+              "name": "default_log_receiver"
+            }
+          ],
+          "startsAt": "2026-09-27T12:44:47.654Z",
+          "status": {
+            "inhibitedBy": [],
+            "silencedBy": [],
+            "state": "active"
+          },
+          "updatedAt": "2026-09-27T12:44:47.677Z",
+          "generatorURL": "http://149c6b028815:9090/graph?g0.expr=synthetic_path_packet_loss_percent+%3E+10&g0.tab=1",
+          "labels": {
+            "alertname": "WAN_Transit_Packet_Loss_High",
+            "cisco_assurance_domain": "hop_by_hop_path_quality",
+            "instance": "synthetic_prober:9200",
+            "job": "synthetic_path_prober",
+            "severity": "critical",
+            "target_host": "ollama_local_inference",
+            "tier": "enterprise_ai_workload"
+          }
+        },
+        {
+          "annotations": {
+            "description": "Synthetic probe failed to reach the AI model API. HTTP status check returned failure.",
+            "summary": "AI Inference Endpoint 172.30.0.40:22 is DOWN"
+          },
+          "endsAt": "2026-09-27T12:48:37.654Z",
+          "fingerprint": "dd7bbcaec80e069d",
+          "receivers": [
+            {
+              "name": "default_log_receiver"
+            }
+          ],
+          "startsAt": "2026-09-27T12:39:12.654Z",
+          "status": {
+            "inhibitedBy": [],
+            "silencedBy": [],
+            "state": "active"
+          },
+          "updatedAt": "2026-09-27T12:44:37.673Z",
+          "generatorURL": "http://149c6b028815:9090/graph?g0.expr=probe_success+%3D%3D+0&g0.tab=1",
+          "labels": {
+            "alertname": "AI_API_Endpoint_Unreachable",
+            "cisco_assurance_domain": "application_availability",
+            "instance": "172.30.0.40:22",
+            "job": "blackbox_tcp_ai_ports",
+            "severity": "critical",
+            "tier": "enterprise_ai_workload"
+          }
+        }
+      ]
+    },
+    "restored": {
+      "healing_command_output": "\ud83c\udf3f [WAN-HEAL] Removing network impairment on container 'lab4_mock_ai'...\n\u2705 Network restored to clean baseline state on lab4_mock_ai.",
+      "tc_qdisc_status": "qdisc noqueue 0: root refcnt 2 \n Sent 0 bytes 0 pkt (dropped 0, overlimits 0 requeues 0) \n backlog 0b 0p requeues 0",
+      "prom_latency_ms": [
+        {
+          "metric": {
+            "__name__": "synthetic_path_latency_ms",
+            "instance": "synthetic_prober:9200",
+            "job": "synthetic_path_prober",
+            "target_host": "huggingface_cloud_api"
+          },
+          "value": [
+            1790513098.34,
+            "4.23"
+          ]
+        },
+        {
+          "metric": {
+            "__name__": "synthetic_path_latency_ms",
+            "instance": "synthetic_prober:9200",
+            "job": "synthetic_path_prober",
+            "target_host": "ollama_local_inference"
+          },
+          "value": [
+            1790513098.34,
+            "3.41"
+          ]
+        }
+      ],
+      "prom_loss_percent": [
+        {
+          "metric": {
+            "__name__": "synthetic_path_packet_loss_percent",
+            "instance": "synthetic_prober:9200",
+            "job": "synthetic_path_prober",
+            "target_host": "huggingface_cloud_api"
+          },
+          "value": [
+            1790513098.355,
+            "0"
+          ]
+        },
+        {
+          "metric": {
+            "__name__": "synthetic_path_packet_loss_percent",
+            "instance": "synthetic_prober:9200",
+            "job": "synthetic_path_prober",
+            "target_host": "ollama_local_inference"
+          },
+          "value": [
+            1790513098.355,
+            "0"
+          ]
+        }
+      ],
+      "prom_jitter_ms": [
+        {
+          "metric": {
+            "__name__": "synthetic_path_jitter_ms",
+            "instance": "synthetic_prober:9200",
+            "job": "synthetic_path_prober",
+            "target_host": "huggingface_cloud_api"
+          },
+          "value": [
+            1790513098.36,
+            "1.54"
+          ]
+        },
+        {
+          "metric": {
+            "__name__": "synthetic_path_jitter_ms",
+            "instance": "synthetic_prober:9200",
+            "job": "synthetic_path_prober",
+            "target_host": "ollama_local_inference"
+          },
+          "value": [
+            1790513098.36,
+            "4.04"
+          ]
+        }
+      ],
+      "active_alerts": [
+        {
+          "labels": {
+            "alertname": "AI_API_Endpoint_Unreachable",
+            "cisco_assurance_domain": "application_availability",
+            "instance": "172.30.0.40:22",
+            "job": "blackbox_tcp_ai_ports",
+            "severity": "critical",
+            "tier": "enterprise_ai_workload"
+          },
+          "annotations": {
+            "description": "Synthetic probe failed to reach the AI model API. HTTP status check returned failure.",
+            "summary": "AI Inference Endpoint 172.30.0.40:22 is DOWN"
+          },
+          "state": "firing",
+          "activeAt": "2026-09-27T12:39:02.654222915Z",
+          "value": "0e+00"
+        },
+        {
+          "labels": {
+            "alertname": "AI_Inference_Latency_Degraded",
+            "cisco_assurance_domain": "network_latency_slo",
+            "instance": "172.30.0.40:22",
+            "job": "blackbox_tcp_ai_ports",
+            "severity": "warning",
+            "tier": "enterprise_ai_workload"
+          },
+          "annotations": {
+            "description": "End-to-end synthetic probe response latency is 3.061s, exceeding the 150ms SLO threshold.",
+            "summary": "AI Inference Latency SLO Violation on 172.30.0.40:22"
+          },
+          "state": "firing",
+          "activeAt": "2026-09-27T12:39:02.654222915Z",
+          "value": "3.061111826e+00"
+        }
+      ]
+    }
+  },
+  "summary_telemetry_table": {
+    "metric": [
+      "Path Latency (ms)",
+      "Packet Loss (%)",
+      "Jitter (ms)",
+      "Active Alert Count"
+    ],
+    "baseline": [
+      "6.01",
+      "0",
+      "3.55",
+      2
+    ],
+    "degraded_wan": [
+      "1555.11",
+      "15",
+      "1198.66",
+      11
+    ],
+    "post_healing": [
+      "4.23",
+      "0",
+      "1.54",
+      2
+    ]
+  }
+}
