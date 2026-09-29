@@ -1,4 +1,4 @@
-name: Lab 4 - Hybrid Cloud Assurance & Synthetic Telemetry CI
+name: Lab 03 - Hybrid Cloud Assurance CI
 
 on:
   push:
@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [ main, master ]
   workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
   network-assurance-validation:
@@ -49,7 +52,7 @@ jobs:
 
       - name: Execute End-to-End Assurance & Impairment Assertions
         run: |
-          python3 prober/verify_assurance_pipeline.py
+          python3 verify_path_assurance.py
 
       - name: Display Prometheus Metrics & Alert States
         if: always()
